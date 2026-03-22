@@ -29,6 +29,18 @@ sudo DEBUG=1 mac_iotop
 
 ## Installation
 
+### Via Homebrew
+
+```bash
+brew install slach/tap/mac_iotop
+```
+
+Then run:
+
+```bash
+sudo mac_iotop
+```
+
 ### From releases
 
 Download the binary for your architecture from [Releases](https://github.com/Slach/mac_iotop/releases):

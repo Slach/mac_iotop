@@ -45,6 +45,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v6
+
       - uses: actions/download-artifact@v7
         with:
           path: artifacts
@@ -59,3 +61,13 @@ jobs:
             --generate-notes \
             artifacts/mac_iotop-amd64/mac_iotop-amd64 \
             artifacts/mac_iotop-arm64/mac_iotop-arm64
+
+      - name: Update Homebrew formula
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"
+          SHA_ARM64=$(sha256sum artifacts/mac_iotop-arm64/mac_iotop-arm64 | awk '{print $1}')
+          SHA_AMD64=$(sha256sum artifacts/mac_iotop-amd64/mac_iotop-amd64 | awk '{print $1}')
+          bash .github/update-formula.sh "$VERSION" "$SHA_ARM64" "$SHA_AMD64"
